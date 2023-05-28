@@ -30,7 +30,7 @@ public class Frame extends JFrame implements ActionListener{
     JButton multiplication = new JButton();
     JButton division = new JButton();
     JButton equal = new JButton();
-    JButton coma = new JButton();
+    JButton comma = new JButton();
     JButton backspace = new JButton();
     JButton delete = new JButton();
     String labelText = "";
@@ -56,7 +56,7 @@ public class Frame extends JFrame implements ActionListener{
 
         createButton(equal, "=", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(FIRST_COLUMN_X_COORDINATE , 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, operationalButtonsList);
         createButton(zero, "0", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(2*FIRST_COLUMN_X_COORDINATE + SMALL_JBUTTON_WIDTH, 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, numericalButtonsList);
-        createButton(coma, ".", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(3*FIRST_COLUMN_X_COORDINATE + 2*SMALL_JBUTTON_WIDTH, 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, numericalButtonsList);
+        createButton(comma, ".", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(3*FIRST_COLUMN_X_COORDINATE + 2*SMALL_JBUTTON_WIDTH, 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, numericalButtonsList);
         createButton(addition, "+", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(4*FIRST_COLUMN_X_COORDINATE + 3*SMALL_JBUTTON_WIDTH, 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, operationalButtonsList);
         createButton(one, "1", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(FIRST_COLUMN_X_COORDINATE, 5*FIRST_ROW_Y_COORDINATE+4*JBUTTON_HEIGHT), panel, numericalButtonsList);
         createButton(two, "2", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(2*FIRST_COLUMN_X_COORDINATE + SMALL_JBUTTON_WIDTH, 5*FIRST_ROW_Y_COORDINATE+4*JBUTTON_HEIGHT), panel, numericalButtonsList);
@@ -121,43 +121,41 @@ public class Frame extends JFrame implements ActionListener{
         }
         return position;
     }
-    public boolean checkStringForDots(String string){
-
-        return false;
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(label.getText().length()<26){
             for(JButton button: numericalButtonsList){
-                if(Objects.equals(label.getText(), logic.zeroWarning)){
-                    clearTextField();
-                } else if (e.getSource() == button) {
-                    // TODO naprawić wiele floatów
-                    if(button.getText().equals(".")){
-                        if(label.getText().length()>0){
-                            if(label.getText().contains(".")){
-                                if(!Objects.equals(getLastCharacter(label.getText()), '.') && !Objects.equals(getLastCharacter(label.getText()), '+') && !Objects.equals(getLastCharacter(label.getText()), '-') && !Objects.equals(getLastCharacter(label.getText()), 'x') && !Objects.equals(getLastCharacter(label.getText()), '/')){
-                                    if((label.getText().contains("+") || (label.getText().contains("-") || (label.getText().contains("x") || (label.getText().contains("/"))) &&
-                                            (!label.getText().substring(checkPositionOfAChar(label.getText(), '+')+1).contains(".")) ||
-                                            (!label.getText().substring(checkPositionOfAChar(label.getText(), '-')+1).contains(".")) ||
-                                            (!label.getText().substring(checkPositionOfAChar(label.getText(), 'x')+1).contains(".")) ||
-                                            (!label.getText().substring(checkPositionOfAChar(label.getText(), '/')+1).contains("."))))){
-                                        upgradeTextField(button);
+                if(e.getSource() == button){
+                    if(Objects.equals(label.getText(), logic.zeroWarning)) {
+                        clearTextField();
+                    }
+                    else {
+                        if(button.getText().equals(".")){
+                            if(label.getText().length()>0){
+                                if(label.getText().contains(".")){
+                                    if(!Objects.equals(getLastCharacter(label.getText()), '.') && !Objects.equals(getLastCharacter(label.getText()), '+') && !Objects.equals(getLastCharacter(label.getText()), '-') && !Objects.equals(getLastCharacter(label.getText()), 'x') && !Objects.equals(getLastCharacter(label.getText()), '/')){
+                                        if((label.getText().contains("+") || (label.getText().contains("-") || (label.getText().contains("x") || (label.getText().contains("/"))) &&
+                                                (!label.getText().substring(checkPositionOfAChar(label.getText(), '+')+1).contains(".")) ||
+                                                (!label.getText().substring(checkPositionOfAChar(label.getText(), '-')+1).contains(".")) ||
+                                                (!label.getText().substring(checkPositionOfAChar(label.getText(), 'x')+1).contains(".")) ||
+                                                (!label.getText().substring(checkPositionOfAChar(label.getText(), '/')+1).contains("."))))){
+                                            upgradeTextField(button);
+                                        }
                                     }
                                 }
-                            }
-                            else{
-                                upgradeTextField(button);
+                                else{
+                                    upgradeTextField(button);
+                                }
                             }
                         }
-                    }
-                    else{
-                        if(lastEquationWasEquality){
-                            clearTextField();
-                            lastEquationWasEquality = false;
+                        else{
+                            if(lastEquationWasEquality){
+                                clearTextField();
+                                lastEquationWasEquality = false;
+                            }
+                            upgradeTextField(button);
                         }
-                        upgradeTextField(button);
                     }
                 }
             }
@@ -179,7 +177,9 @@ public class Frame extends JFrame implements ActionListener{
                                     lastEquationWasEquality = false;
                                     labelText = logic.equal(labelText);
                                     label.setText(labelText);
-                                    upgradeTextField(button);
+                                    if(!Objects.equals(label.getText(), logic.zeroWarning)){
+                                        upgradeTextField(button);
+                                    }
                                 }
                             }
                             case "=" -> {
