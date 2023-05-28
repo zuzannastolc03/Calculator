@@ -38,6 +38,7 @@ public class Frame extends JFrame implements ActionListener{
     ArrayList<JButton> numericalButtonsList = new ArrayList<>();
     ArrayList<JButton> operationalButtonsList = new ArrayList<>();
     Boolean lastEquationWasEquality = false;
+    Character[] mathematicalOperators = {'+', '-', 'x', '/'};
 
     Frame() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,6 +122,46 @@ public class Frame extends JFrame implements ActionListener{
         }
         return position;
     }
+    public boolean compareTheLastCharacterToArrayItems(String text) {
+        boolean tempStatus=false;
+        if(text.length()>0){
+            for (Character operator : mathematicalOperators) {
+                if (Objects.equals(getLastCharacter(text), operator)) {
+                    tempStatus=true;
+                    break;
+                }
+            }
+        }
+        return !tempStatus;
+    }
+
+    public boolean checkIfAStringContainAnElementOfAnArray(String text) {
+        boolean tempStatus=false;
+        if(text.length()>0){
+            for (Character operator : mathematicalOperators) {
+                if (text.contains(operator.toString())) {
+                    tempStatus = true;
+                    break;
+                }
+            }
+        }
+        return tempStatus;
+    }
+
+    public boolean checkAStringForDotsExistence(String text) {
+        boolean tempStatus=false;
+        if(text.length()>0){
+            for (Character operator : mathematicalOperators) {
+                if(checkPositionOfAChar(text, operator) != 0){
+                    if (text.substring(checkPositionOfAChar(text, operator)+1).contains(".")) {
+                        tempStatus = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return tempStatus;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -134,12 +175,8 @@ public class Frame extends JFrame implements ActionListener{
                         if(button.getText().equals(".")){
                             if(label.getText().length()>0){
                                 if(label.getText().contains(".")){
-                                    if(!Objects.equals(getLastCharacter(label.getText()), '.') && !Objects.equals(getLastCharacter(label.getText()), '+') && !Objects.equals(getLastCharacter(label.getText()), '-') && !Objects.equals(getLastCharacter(label.getText()), 'x') && !Objects.equals(getLastCharacter(label.getText()), '/')){
-                                        if((label.getText().contains("+") || (label.getText().contains("-") || (label.getText().contains("x") || (label.getText().contains("/"))) &&
-                                                (!label.getText().substring(checkPositionOfAChar(label.getText(), '+')+1).contains(".")) ||
-                                                (!label.getText().substring(checkPositionOfAChar(label.getText(), '-')+1).contains(".")) ||
-                                                (!label.getText().substring(checkPositionOfAChar(label.getText(), 'x')+1).contains(".")) ||
-                                                (!label.getText().substring(checkPositionOfAChar(label.getText(), '/')+1).contains("."))))){
+                                    if(!Objects.equals(getLastCharacter(label.getText()), '.') && compareTheLastCharacterToArrayItems(label.getText())){
+                                        if((checkIfAStringContainAnElementOfAnArray(label.getText()) && !checkAStringForDotsExistence(label.getText()))){
                                             upgradeTextField(button);
                                         }
                                     }
@@ -169,11 +206,11 @@ public class Frame extends JFrame implements ActionListener{
                     else{
                         switch (button.getText()) {
                             case "+", "-", "x", "/" -> {
-                                if(labelText.length()>0 && !label.getText().contains("+") && !label.getText().contains("-") && !label.getText().contains("x") && !label.getText().contains("/") && !Objects.equals(getLastCharacter(label.getText()), '.')){
+                                if(labelText.length()>0 && !checkIfAStringContainAnElementOfAnArray(label.getText()) && !Objects.equals(getLastCharacter(label.getText()), '.')){
                                     lastEquationWasEquality = false;
                                     upgradeTextField(button);
                                 }
-                                else if((label.getText().contains("+") || label.getText().contains("-") || label.getText().contains("x") || label.getText().contains("/")) && !Objects.equals(getLastCharacter(label.getText()), '.') && !Objects.equals(getLastCharacter(label.getText()), '+') && !Objects.equals(getLastCharacter(label.getText()), '-') && !Objects.equals(getLastCharacter(label.getText()), 'x') && !Objects.equals(getLastCharacter(label.getText()), '/')){
+                                else if((checkIfAStringContainAnElementOfAnArray(label.getText()) && !Objects.equals(getLastCharacter(label.getText()), '.') && compareTheLastCharacterToArrayItems(label.getText()))){
                                     lastEquationWasEquality = false;
                                     labelText = logic.equal(labelText);
                                     label.setText(labelText);
@@ -183,8 +220,8 @@ public class Frame extends JFrame implements ActionListener{
                                 }
                             }
                             case "=" -> {
-                                if(label.getText().contains("+") || label.getText().contains("-") || label.getText().contains("x") || label.getText().contains("/")){
-                                    if(labelText.length()>0 && !Objects.equals(getLastCharacter(label.getText()), '+') && !Objects.equals(getLastCharacter(label.getText()), '-')&& !Objects.equals(getLastCharacter(label.getText()), 'x') && !Objects.equals(getLastCharacter(label.getText()), '/') && !Objects.equals(getLastCharacter(label.getText()), '.')){
+                                if(checkIfAStringContainAnElementOfAnArray(label.getText())){
+                                    if(labelText.length()>0 && compareTheLastCharacterToArrayItems(label.getText()) && !Objects.equals(getLastCharacter(label.getText()), '.')){
                                         labelText = logic.equal(labelText);
                                         label.setText(labelText);
                                         lastEquationWasEquality = true;
