@@ -35,11 +35,9 @@ public class Frame extends JFrame implements ActionListener{
     JButton delete = new JButton();
     String labelText = "";
     JLabel label = new JLabel(labelText, SwingConstants.RIGHT);
-    ArrayList<JButton> numericButtonsList = new ArrayList<>();
-    ArrayList<JButton> operationButtonsList = new ArrayList<>();
+    ArrayList<JButton> numericalButtonsList = new ArrayList<>();
+    ArrayList<JButton> operationalButtonsList = new ArrayList<>();
     Boolean lastEquationWasEquality = false;
-    float firstNumber;
-    float secondNumber;
 
     Frame() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,29 +54,29 @@ public class Frame extends JFrame implements ActionListener{
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
-        createButton(equal, "=", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(FIRST_COLUMN_X_COORDINATE , 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, operationButtonsList);
-        createButton(zero, "0", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(2*FIRST_COLUMN_X_COORDINATE + SMALL_JBUTTON_WIDTH, 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, numericButtonsList);
-        createButton(coma, ".", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(3*FIRST_COLUMN_X_COORDINATE + 2*SMALL_JBUTTON_WIDTH, 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, numericButtonsList);
-        createButton(addition, "+", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(4*FIRST_COLUMN_X_COORDINATE + 3*SMALL_JBUTTON_WIDTH, 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, operationButtonsList);
-        createButton(one, "1", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(FIRST_COLUMN_X_COORDINATE, 5*FIRST_ROW_Y_COORDINATE+4*JBUTTON_HEIGHT), panel, numericButtonsList);
-        createButton(two, "2", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(2*FIRST_COLUMN_X_COORDINATE + SMALL_JBUTTON_WIDTH, 5*FIRST_ROW_Y_COORDINATE+4*JBUTTON_HEIGHT), panel, numericButtonsList);
-        createButton(three, "3", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(3*FIRST_COLUMN_X_COORDINATE + 2*SMALL_JBUTTON_WIDTH, 5*FIRST_ROW_Y_COORDINATE+4*JBUTTON_HEIGHT), panel, numericButtonsList);
-        createButton(subtraction, "-", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(4*FIRST_COLUMN_X_COORDINATE + 3*SMALL_JBUTTON_WIDTH, 5*FIRST_ROW_Y_COORDINATE+4*JBUTTON_HEIGHT), panel, operationButtonsList);
-        createButton(four, "4", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(FIRST_COLUMN_X_COORDINATE, 4*FIRST_ROW_Y_COORDINATE+3*JBUTTON_HEIGHT), panel, numericButtonsList);
-        createButton(five, "5", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(2*FIRST_COLUMN_X_COORDINATE + SMALL_JBUTTON_WIDTH, 4*FIRST_ROW_Y_COORDINATE+3*JBUTTON_HEIGHT), panel, numericButtonsList);
-        createButton(six, "6", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(3*FIRST_COLUMN_X_COORDINATE + 2*SMALL_JBUTTON_WIDTH, 4*FIRST_ROW_Y_COORDINATE+3*JBUTTON_HEIGHT), panel, numericButtonsList);
-        createButton(multiplication, "x", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(4*FIRST_COLUMN_X_COORDINATE + 3*SMALL_JBUTTON_WIDTH, 4*FIRST_ROW_Y_COORDINATE+3*JBUTTON_HEIGHT), panel, operationButtonsList);
-        createButton(seven, "7", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(FIRST_COLUMN_X_COORDINATE, 3*FIRST_ROW_Y_COORDINATE+2*JBUTTON_HEIGHT), panel, numericButtonsList);
-        createButton(eight, "8", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(2*FIRST_COLUMN_X_COORDINATE + SMALL_JBUTTON_WIDTH, 3*FIRST_ROW_Y_COORDINATE+2*JBUTTON_HEIGHT), panel, numericButtonsList);
-        createButton(nine, "9", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(3*FIRST_COLUMN_X_COORDINATE + 2*SMALL_JBUTTON_WIDTH, 3*FIRST_ROW_Y_COORDINATE+2*JBUTTON_HEIGHT), panel, numericButtonsList);
-        createButton(division, "/", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(4*FIRST_COLUMN_X_COORDINATE + 3*SMALL_JBUTTON_WIDTH, 3*FIRST_ROW_Y_COORDINATE+2*JBUTTON_HEIGHT), panel, operationButtonsList);
-        createButton(delete, "CE", BIG_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(FIRST_COLUMN_X_COORDINATE, 2*FIRST_ROW_Y_COORDINATE+JBUTTON_HEIGHT), panel, operationButtonsList);
-        createButton(backspace, "⌫", BIG_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(3*FIRST_COLUMN_X_COORDINATE + 2*SMALL_JBUTTON_WIDTH, 2*FIRST_ROW_Y_COORDINATE+JBUTTON_HEIGHT), panel, operationButtonsList);
+        createButton(equal, "=", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(FIRST_COLUMN_X_COORDINATE , 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, operationalButtonsList);
+        createButton(zero, "0", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(2*FIRST_COLUMN_X_COORDINATE + SMALL_JBUTTON_WIDTH, 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, numericalButtonsList);
+        createButton(coma, ".", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(3*FIRST_COLUMN_X_COORDINATE + 2*SMALL_JBUTTON_WIDTH, 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, numericalButtonsList);
+        createButton(addition, "+", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(4*FIRST_COLUMN_X_COORDINATE + 3*SMALL_JBUTTON_WIDTH, 6*FIRST_ROW_Y_COORDINATE+5*JBUTTON_HEIGHT), panel, operationalButtonsList);
+        createButton(one, "1", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(FIRST_COLUMN_X_COORDINATE, 5*FIRST_ROW_Y_COORDINATE+4*JBUTTON_HEIGHT), panel, numericalButtonsList);
+        createButton(two, "2", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(2*FIRST_COLUMN_X_COORDINATE + SMALL_JBUTTON_WIDTH, 5*FIRST_ROW_Y_COORDINATE+4*JBUTTON_HEIGHT), panel, numericalButtonsList);
+        createButton(three, "3", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(3*FIRST_COLUMN_X_COORDINATE + 2*SMALL_JBUTTON_WIDTH, 5*FIRST_ROW_Y_COORDINATE+4*JBUTTON_HEIGHT), panel, numericalButtonsList);
+        createButton(subtraction, "-", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(4*FIRST_COLUMN_X_COORDINATE + 3*SMALL_JBUTTON_WIDTH, 5*FIRST_ROW_Y_COORDINATE+4*JBUTTON_HEIGHT), panel, operationalButtonsList);
+        createButton(four, "4", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(FIRST_COLUMN_X_COORDINATE, 4*FIRST_ROW_Y_COORDINATE+3*JBUTTON_HEIGHT), panel, numericalButtonsList);
+        createButton(five, "5", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(2*FIRST_COLUMN_X_COORDINATE + SMALL_JBUTTON_WIDTH, 4*FIRST_ROW_Y_COORDINATE+3*JBUTTON_HEIGHT), panel, numericalButtonsList);
+        createButton(six, "6", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(3*FIRST_COLUMN_X_COORDINATE + 2*SMALL_JBUTTON_WIDTH, 4*FIRST_ROW_Y_COORDINATE+3*JBUTTON_HEIGHT), panel, numericalButtonsList);
+        createButton(multiplication, "x", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(4*FIRST_COLUMN_X_COORDINATE + 3*SMALL_JBUTTON_WIDTH, 4*FIRST_ROW_Y_COORDINATE+3*JBUTTON_HEIGHT), panel, operationalButtonsList);
+        createButton(seven, "7", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(FIRST_COLUMN_X_COORDINATE, 3*FIRST_ROW_Y_COORDINATE+2*JBUTTON_HEIGHT), panel, numericalButtonsList);
+        createButton(eight, "8", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(2*FIRST_COLUMN_X_COORDINATE + SMALL_JBUTTON_WIDTH, 3*FIRST_ROW_Y_COORDINATE+2*JBUTTON_HEIGHT), panel, numericalButtonsList);
+        createButton(nine, "9", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(3*FIRST_COLUMN_X_COORDINATE + 2*SMALL_JBUTTON_WIDTH, 3*FIRST_ROW_Y_COORDINATE+2*JBUTTON_HEIGHT), panel, numericalButtonsList);
+        createButton(division, "/", SMALL_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(4*FIRST_COLUMN_X_COORDINATE + 3*SMALL_JBUTTON_WIDTH, 3*FIRST_ROW_Y_COORDINATE+2*JBUTTON_HEIGHT), panel, operationalButtonsList);
+        createButton(delete, "CE", BIG_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(FIRST_COLUMN_X_COORDINATE, 2*FIRST_ROW_Y_COORDINATE+JBUTTON_HEIGHT), panel, operationalButtonsList);
+        createButton(backspace, "⌫", BIG_JBUTTON_WIDTH, JBUTTON_HEIGHT, new Point2D.Double(3*FIRST_COLUMN_X_COORDINATE + 2*SMALL_JBUTTON_WIDTH, 2*FIRST_ROW_Y_COORDINATE+JBUTTON_HEIGHT), panel, operationalButtonsList);
 
-        for(JButton button: numericButtonsList){
+        for(JButton button: numericalButtonsList){
             button.addActionListener(this);
         }
-        for(JButton button: operationButtonsList){
+        for(JButton button: operationalButtonsList){
             button.addActionListener(this);
         }
 
@@ -114,10 +112,24 @@ public class Frame extends JFrame implements ActionListener{
         return labelText.charAt(labelText.length()-1);
     }
 
+    public int checkPositionOfAChar(String text, Character ch){
+        int position=0;
+        for(int i=0; i<text.length(); i++){
+            if(text.charAt(i) == ch){
+                position = i;
+            }
+        }
+        return position;
+    }
+    public boolean checkStringForDots(String string){
+
+        return false;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(label.getText().length()<26){
-            for(JButton button: numericButtonsList){
+            for(JButton button: numericalButtonsList){
                 if(Objects.equals(label.getText(), logic.zeroWarning)){
                     clearTextField();
                 } else if (e.getSource() == button) {
@@ -125,7 +137,15 @@ public class Frame extends JFrame implements ActionListener{
                     if(button.getText().equals(".")){
                         if(label.getText().length()>0){
                             if(label.getText().contains(".")){
-                                break;
+                                if(!Objects.equals(getLastCharacter(label.getText()), '.') && !Objects.equals(getLastCharacter(label.getText()), '+') && !Objects.equals(getLastCharacter(label.getText()), '-') && !Objects.equals(getLastCharacter(label.getText()), 'x') && !Objects.equals(getLastCharacter(label.getText()), '/')){
+                                    if((label.getText().contains("+") || (label.getText().contains("-") || (label.getText().contains("x") || (label.getText().contains("/"))) &&
+                                            (!label.getText().substring(checkPositionOfAChar(label.getText(), '+')+1).contains(".")) ||
+                                            (!label.getText().substring(checkPositionOfAChar(label.getText(), '-')+1).contains(".")) ||
+                                            (!label.getText().substring(checkPositionOfAChar(label.getText(), 'x')+1).contains(".")) ||
+                                            (!label.getText().substring(checkPositionOfAChar(label.getText(), '/')+1).contains("."))))){
+                                        upgradeTextField(button);
+                                    }
+                                }
                             }
                             else{
                                 upgradeTextField(button);
@@ -143,7 +163,7 @@ public class Frame extends JFrame implements ActionListener{
             }
         }
         if (label.getText().length()<28) {
-            for(JButton button: operationButtonsList) {
+            for(JButton button: operationalButtonsList) {
                 if (e.getSource() == button) {
                     if(Objects.equals(label.getText(), logic.zeroWarning)){
                         clearTextField();
@@ -155,12 +175,20 @@ public class Frame extends JFrame implements ActionListener{
                                     lastEquationWasEquality = false;
                                     upgradeTextField(button);
                                 }
-                            }
-                            case "=" -> {
-                                if(labelText.length()>0 && !Objects.equals(getLastCharacter(label.getText()), '+') && !Objects.equals(getLastCharacter(label.getText()), '-')&& !Objects.equals(getLastCharacter(label.getText()), 'x') && !Objects.equals(getLastCharacter(label.getText()), '/') && !Objects.equals(getLastCharacter(label.getText()), '.')){
+                                else if((label.getText().contains("+") || label.getText().contains("-") || label.getText().contains("x") || label.getText().contains("/")) && !Objects.equals(getLastCharacter(label.getText()), '.') && !Objects.equals(getLastCharacter(label.getText()), '+') && !Objects.equals(getLastCharacter(label.getText()), '-') && !Objects.equals(getLastCharacter(label.getText()), 'x') && !Objects.equals(getLastCharacter(label.getText()), '/')){
+                                    lastEquationWasEquality = false;
                                     labelText = logic.equal(labelText);
                                     label.setText(labelText);
-                                    lastEquationWasEquality = true;
+                                    upgradeTextField(button);
+                                }
+                            }
+                            case "=" -> {
+                                if(label.getText().contains("+") || label.getText().contains("-") || label.getText().contains("x") || label.getText().contains("/")){
+                                    if(labelText.length()>0 && !Objects.equals(getLastCharacter(label.getText()), '+') && !Objects.equals(getLastCharacter(label.getText()), '-')&& !Objects.equals(getLastCharacter(label.getText()), 'x') && !Objects.equals(getLastCharacter(label.getText()), '/') && !Objects.equals(getLastCharacter(label.getText()), '.')){
+                                        labelText = logic.equal(labelText);
+                                        label.setText(labelText);
+                                        lastEquationWasEquality = true;
+                                    }
                                 }
                             }
                             case "CE" -> {
@@ -168,8 +196,13 @@ public class Frame extends JFrame implements ActionListener{
                             }
                             case "⌫" -> {
                                 if (labelText.length() > 0) {
-                                    labelText = labelText.substring(0, labelText.length() - 1);
-                                    label.setText(labelText);
+                                    if(lastEquationWasEquality){
+                                        clearTextField();
+                                    }
+                                    else {
+                                        labelText = labelText.substring(0, labelText.length() - 1);
+                                        label.setText(labelText);
+                                    }
                                 }
                             }
                         }
