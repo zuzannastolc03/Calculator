@@ -3,12 +3,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Frame extends JFrame implements ActionListener {
-    Logic logic = new Logic();
     final static int MAP_DIMENSION = 400;
     final static int BUTTON_WIDTH = 90;
     final static int BUTTON_HEIGHT = 60;
@@ -44,7 +44,8 @@ public class Frame extends JFrame implements ActionListener {
     char[] parentheses = {'(', ')'};
     char[] numbers;
     boolean parenthesesOpened = false;
-
+    boolean thisIsAnEquation = false;
+    String zeroWarning = "You can't divide by 0!";
 
     Frame() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -119,6 +120,7 @@ public class Frame extends JFrame implements ActionListener {
     public void clearTextField() {
         labelText = "";
         label.setText(labelText);
+        thisIsAnEquation = false;
     }
 
     public void updateTextField(JButton button) {
@@ -167,12 +169,112 @@ public class Frame extends JFrame implements ActionListener {
         return tempStatus;
     }
 
+    public void equalitySign() {
+        labelText = equal(labelText, mathematicalOperators, equationStartsWithANegativeNumber(label.getText()), equationStartsWithParenthesesAndNegativeNumber(label.getText()));
+        label.setText(labelText);
+        lastEquationWasEquality = true;
+        thisIsAnEquation = false;
+    }
+
+    public boolean equationStartsWithANegativeNumber(String equation) {
+        if(equation.length()>0){
+            return Objects.equals(equation.charAt(0), '-');
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean equationStartsWithParenthesesAndNegativeNumber(String equation) {
+        if(equation.length()>1){
+            return Objects.equals(equation.charAt(0), '(') && Objects.equals(equation.charAt(1), '-');
+        }
+        else {
+            return false;
+        }
+    }
+
+    // TODO identifying the first negative number works, but the second doesn't. To be fixed.
+    public boolean checkEquationExistence(String equation, char[] operators) {
+        boolean anEquation;
+        if (equationStartsWithANegativeNumber(equation)) {
+            anEquation = checkIfAStringContainsAnElementOfAnArray(equation.substring(1), operators);
+        } else if (equationStartsWithParenthesesAndNegativeNumber(equation)) {
+            anEquation = checkIfAStringContainsAnElementOfAnArray(equation.substring(2), operators);
+        } else {
+            anEquation = checkIfAStringContainsAnElementOfAnArray(equation, operators);
+        }
+        return anEquation;
+    }
+
+    public String addition(BigDecimal a, BigDecimal b) {
+        return String.valueOf(a.add(b));
+    }
+
+    public String subtraction(BigDecimal a, BigDecimal b) {
+        return String.valueOf(a.subtract(b));
+    }
+
+    public String multiplication(BigDecimal a, BigDecimal b) {
+        return String.valueOf(a.multiply(b));
+    }
+
+    public String division(BigDecimal a, BigDecimal b) {
+        if (!Objects.equals(b, new BigDecimal(0))) {
+            return String.valueOf((a.divide(b, 10, RoundingMode.HALF_UP)).stripTrailingZeros());
+        } else {
+            return zeroWarning;
+        }
+    }
+
+    public String equal(String equation, char[] operators, boolean negativeNumberAtTheBeginning, boolean parenthesesAndNegativeNumberAtTheBeginning) {
+        String result = "";
+        int startIndex;
+        if (negativeNumberAtTheBeginning) {
+            startIndex = 1;
+        } else if (parenthesesAndNegativeNumberAtTheBeginning) {
+            startIndex = 2;
+        } else {
+            startIndex = 0;
+        }
+//        String regEx = "[" + String.valueOf(operators) + "]";
+//        ArrayList<Character> occurringSigns = new ArrayList<>();
+//        System.out.println(Arrays.toString(equation.split(regEx)));
+        for (int i = startIndex; i < equation.length(); i++) {
+            switch (equation.charAt(i)) {
+                case '+' -> {
+                    System.out.println("Addition");
+//                    occurringSigns.add(equation.charAt(i));
+//                    result = addition(new BigDecimal(equation.substring(0, i)), new BigDecimal(equation.substring(i + 1)));
+                }
+                case '-' -> {
+                    System.out.println("Subtraction");
+//                    occurringSigns.add(equation.charAt(i));
+//                    result = subtraction(new BigDecimal(equation.substring(0, i)), new BigDecimal(equation.substring(i + 1)));
+
+                }
+                case 'x' -> {
+                    System.out.println("Multiplication");
+//                    occurringSigns.add(equation.charAt(i));
+//                    result = multiplication(new BigDecimal(equation.substring(0, i)), new BigDecimal(equation.substring(i + 1)));
+                }
+                case '/' -> {
+                    System.out.println("Division");
+//                    occurringSigns.add(equation.charAt(i));
+//                    result = division(new BigDecimal(equation.substring(0, i)), new BigDecimal(equation.substring(i + 1)));
+                }
+            }
+        }
+//        System.out.println(occurringSigns);
+        return result;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (label.getText().length() < 26) {
             for (JButton button : numericalButtonsArray) {
                 if (e.getSource() == button) {
-                    if (Objects.equals(label.getText(), logic.zeroWarning)) {
+                    if (Objects.equals(label.getText(), zeroWarning)) {
                         clearTextField();
                     } else {
                         switch (button.getText()) {
@@ -210,27 +312,29 @@ public class Frame extends JFrame implements ActionListener {
         if (label.getText().length() < 28) {
             for (JButton button : operationalButtonsArray) {
                 if (e.getSource() == button) {
-                    if (Objects.equals(label.getText(), logic.zeroWarning)) {
+                    if (Objects.equals(label.getText(), zeroWarning)) {
                         clearTextField();
                     } else {
                         switch (button.getText()) {
                             case "+", "-", "x", "/" -> {
-                                if (Objects.equals(label.getText(), logic.zeroWarning)) {
+                                if (Objects.equals(label.getText(), zeroWarning)) {
                                     clearTextField();
                                 } else {
-                                    if ((!label.getText().isEmpty() && ((compareTheLastCharacterToArrayItems(label.getText(), numbers)) || (compareTheLastCharacterToArrayItems(label.getText(), parentheses))) && !parenthesesOpened) || ((compareTheLastCharacterToArrayItems(label.getText(), parentheses) || label.getText().isEmpty()) && Objects.equals(button.getText(), "-"))) {
-                                        lastEquationWasEquality = false;
-                                        updateTextField(button);
+                                    thisIsAnEquation = checkEquationExistence(label.getText(), mathematicalOperators);
+                                    if (thisIsAnEquation) {
+                                        equalitySign();
+                                    } else {
+                                        if ((!label.getText().isEmpty() && ((compareTheLastCharacterToArrayItems(label.getText(), numbers)) || (compareTheLastCharacterToArrayItems(label.getText(), parentheses))) && !parenthesesOpened) || ((compareTheLastCharacterToArrayItems(label.getText(), parentheses) || label.getText().isEmpty()) && Objects.equals(button.getText(), "-"))) {
+                                            lastEquationWasEquality = false;
+                                            updateTextField(button);
+                                        }
                                     }
                                 }
                             }
                             case "=" -> {
-                                if (checkIfAStringContainsAnElementOfAnArray(label.getText(), mathematicalOperators)) {
-                                    if (!label.getText().isEmpty() && !compareTheLastCharacterToArrayItems(label.getText(), mathematicalOperators) && !Objects.equals(getLastCharacter(label.getText()), '.') && Objects.equals(label.getText().chars().filter(ch -> ch == '(').count(), label.getText().chars().filter(ch -> ch == ')').count())) {
-                                        labelText = logic.equal(labelText, mathematicalOperators);
-                                        label.setText(labelText);
-                                        lastEquationWasEquality = true;
-                                    }
+                                thisIsAnEquation = checkEquationExistence(label.getText(), mathematicalOperators);
+                                if (!label.getText().isEmpty() && !compareTheLastCharacterToArrayItems(label.getText(), mathematicalOperators) && !Objects.equals(getLastCharacter(label.getText()), '.') && Objects.equals(label.getText().chars().filter(ch -> ch == '(').count(), label.getText().chars().filter(ch -> ch == ')').count()) && thisIsAnEquation) {
+                                    equalitySign();
                                 }
                             }
                             case "CE" -> clearTextField();
